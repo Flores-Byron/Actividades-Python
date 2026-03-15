@@ -1,6 +1,8 @@
-user_word = input(print("Ingresa una palabra:\n "))# Indicar al usuario que ingrese una palabra
+word_without_vowels = ""
 
+user_word = input(print("Ingresa una palabra: "))# Indicar al usuario que ingrese una palabra
 user_word = user_word.upper()# y asignarlo a la variable user_word.
+
 
 for letter in user_word:
     if letter == "A":
@@ -14,4 +16,6 @@ for letter in user_word:
     elif letter == "U":
         continue
     else:
-        print(letter)
+        word_without_vowels += letter
+
+print(word_without_vowels)# Imprimir la palabra asignada a word_without_vowels.
