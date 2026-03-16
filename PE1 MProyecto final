@@ -1,0 +1,76 @@
+from random import randrange
+
+# Inicializar el tablero
+board = [[str(1), str(2), str(3)],
+         [str(4), 'X', str(6)],   # La máquina siempre empieza con 'X' en el centro
+         [str(7), str(8), str(9)]]
+
+# Función para mostrar el tablero
+def display_board(board):
+    print("+-------+-------+-------+")
+    for row in board:
+        print("|       |       |       |")
+        print("|  " + "  |  ".join(row) + "  |")
+        print("|       |       |       |")
+        print("+-------+-------+-------+")
+
+# Función para verificar el estado del juego
+def victory_for(board, sign):
+    # Filas
+    for row in board:
+        if all(cell == sign for cell in row):
+            return True
+    # Columnas
+    for col in range(3):
+        if all(board[row][col] == sign for row in range(3)):
+            return True
+    # Diagonales
+    if all(board[i][i] == sign for i in range(3)):
+        return True
+    if all(board[i][2-i] == sign for i in range(3)):
+        return True
+    return False
+
+# Función para movimiento del usuario
+def enter_move(board):
+    while True:
+        move = input("Ingresa tu movimiento: ")
+        if move.isdigit():
+            move = int(move)
+            if 1 <= move <= 9:
+                row, col = divmod(move-1, 3)
+                if board[row][col] not in ['X', 'O']:
+                    board[row][col] = 'O'
+                    break
+        print("Movimiento inválido, intenta de nuevo.")
+
+# Función para movimiento de la máquina
+def draw_move(board):
+    free = [(r, c) for r in range(3) for c in range(3) if board[r][c] not in ['X', 'O']]
+    if free:
+        row, col = free[randrange(len(free))]
+        board[row][col] = 'X'
+
+# Juego principal
+def play_game():
+    display_board(board)
+    while True:
+        enter_move(board)
+        display_board(board)
+        if victory_for(board, 'O'):
+            print("¡Has Ganado!")
+            break
+        if not any(cell not in ['X', 'O'] for row in board for cell in row):
+            print("Empate!")
+            break
+        draw_move(board)
+        display_board(board)
+        if victory_for(board, 'X'):
+            print("La máquina gana...")
+            break
+        if not any(cell not in ['X', 'O'] for row in board for cell in row):
+            print("Empate!")
+            break
+
+# Ejecutar el juego
+play_game()
